@@ -24,3 +24,4 @@ def upload_file():
 
         if file and allowed_file(file.filename):
             return 'Well done'
+    return render_template('index.html')
