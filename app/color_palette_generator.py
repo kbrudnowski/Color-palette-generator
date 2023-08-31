@@ -1,16 +1,21 @@
 import cv2
 from sklearn.cluster import KMeans
 from collections import Counter
+from PIL import Image
+import numpy as np
+
 
 
 def rgb2hex(color):
     return "#{:02x}{:02x}{:02x}".format(int(color[0]), int(color[1]), int(color[2]))
 
 
-def get_colors(image_path):
+def get_colors(image_file):
     """takes image, classifies colours with K-means cluster and returns a list of 4 most used colours as output"""
 
-    image = cv2.imread(image_path)
+    file = image_file
+    file_bytes = np.fromfile(file, np.uint8)
+    image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     pixels = image.reshape(-1, 3)
