@@ -7,7 +7,13 @@ from .color_palette_generator import get_colors
 def upload_file():
     if request.method == 'POST':
         f = request.files.get('file')
-        colors = get_colors(f)
-        print(colors)
-        return render_template('effect.html', colors = colors)
+        if f:
+            colors = get_colors(f)
+            return redirect(url_for('effect'))
     return render_template('index.html')
+
+
+@app.route('/effect')
+def effect():
+    colors = request.args.get('colors')
+    return render_template('effect.html')

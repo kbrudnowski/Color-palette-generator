@@ -2,16 +2,20 @@
 {{ super() }}
 
 {% block header %}
-{{ dropzone.load_css() }}
     {% endblock %}
 
 {% block content %}
 
-{{ dropzone.create(action='upload_file') }}
-  {% endblock %}
+<form action="/" method="POST" class="dropzone" id="my-dropzone">
+        <div class="dz-message">
+                                <i class="fas fa-cloud-upload-alt mb-3"></i>
+                                <p class="lead mb-0">Drag &amp; Drop or Click to Upload</p>
+                            </div>
+    </form>
+
+{% endblock %}
 
 {% block footer %}
-{{ dropzone.load_js() }}
+
     {% endblock %}
 
-{{ dropzone.config() }}
