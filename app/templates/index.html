@@ -75,18 +75,22 @@
         });
 
         document.getElementById("upload-btn").addEventListener("click", function () {
-            myDropzone.processQueue();
-            document.getElementById("dropzone-section").style.display = "none";
-            document.getElementById("loading-section").style.display = "block";
+            var files = myDropzone.getQueuedFiles();
 
+            if (files.length > 0) {
+                myDropzone.processQueue();
+                document.getElementById("dropzone-section").style.display = "none";
+                document.getElementById("loading-section").style.display = "block";
 
-
-            setTimeout(function () {
-                updateColorPalette()
-                document.getElementById("loading-section").style.display = "none";
-                document.getElementById("color-palette-section").style.display = "block";
-                document.getElementById("try-another-section").style.display = "block";
-            }, 4000);
+                setTimeout(function () {
+                    updateColorPalette()
+                    document.getElementById("loading-section").style.display = "none";
+                    document.getElementById("color-palette-section").style.display = "block";
+                    document.getElementById("try-another-section").style.display = "block";
+                }, 4000);
+            } else {
+                alert("Please add files to the queue before generating colors.");
+            }
         });
 
         document.getElementById("try-another").addEventListener("click", function () {
@@ -169,7 +173,8 @@
                                 </div>
                             </div>
             `;
-        };
+        }
+
     </script>
 </body>
 </html>
