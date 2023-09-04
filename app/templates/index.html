@@ -2,20 +2,44 @@
 {{ super() }}
 
 {% block header %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
     {% endblock %}
 
 {% block content %}
-
-<form action="/" method="POST" class="dropzone" id="my-dropzone">
+<form action="{{ url_for('generate_colors') }}" method="POST" class="dropzone text-center" id="my-dropzone">
         <div class="dz-message">
                                 <i class="fas fa-cloud-upload-alt mb-3"></i>
                                 <p class="lead mb-0">Drag &amp; Drop or Click to Upload</p>
                             </div>
     </form>
+<div class="text-center"><button class="btn btn-primary mt-3" id="upload-btn">Generate</button></div>
+
 
 {% endblock %}
 
 {% block footer %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
+<script>
 
+        Dropzone.options.myDropzone = {
+            paramName: "file", // The name of the file field
+            maxFilesize: 5,    // Maximum file size in megabytes
+            acceptedFiles: ".jpg,.jpeg,.png", // Allowed file types
+            addRemoveLinks: true, // Show remove links on uploaded files
+            uploadMultiple: false,
+            autoProcessQueue: false,
+
+            success: function (file, response) {
+                window.location.href = "{{ url_for('generate_colors') }}";
+            }
+        };
+
+
+        var myDropzone = new Dropzone("#my-dropzone", Dropzone.options.myDropzone);
+
+        // Add an event listener to the "Generate" button
+        document.getElementById("upload-btn").addEventListener("click", function () {
+            myDropzone.processQueue();
+        });
+    </script>
     {% endblock %}
-
