@@ -34,7 +34,9 @@ def get_colors(image_file):
     for color in top_colors:
         colors.append(rgb2hex(color))
 
-    return colors
+    colors_dict = {'colors': colors}
+
+    return colors_dict
 
 
 
