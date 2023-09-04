@@ -21,6 +21,7 @@
                 <h1 class="text-center mb-4" id="page-title">Color Palette Generator</h1>
                 <div class="card bg-light rounded-lg shadow-lg">
                     <div class="card-body">
+
                         <div id="dropzone-section">
                             <form action="{{ url_for('generate_colors') }}" method="POST" class="dropzone text-center" id="my-dropzone">
                                 <div class="dz-message">
@@ -29,26 +30,21 @@
                                 </div>
                             </form>
                             <div class="text-center">
-                                <button class="btn btn-primary mt-3" id="upload-btn">Generate</button>
+                                <button class="btn btn-primary btn-lg mt-3" id="upload-btn">Generate</button>
                             </div>
                         </div>
 
                         <div id="color-palette-section" style="display: none;">
-                            <div class="color-palette">
-                                <div class="color-box" style="background-color: {{ session['color_1'] }};">
-                                    <div class="color-label">{{ session['color_1'] }}</div>
-                                </div>
-                                <div class="color-box" style="background-color: {{ session['color_2'] }};">
-                                    <div class="color-label">{{ session['color_2'] }}</div>
-                                </div>
-                                <div class="color-box" style="background-color: {{ session['color_3'] }};">
-                                    <div class="color-label">{{ session['color_3'] }}</div>
-                                </div>
-                                <div class="color-box" style="background-color: {{ session['color_4'] }};">
-                                    <div class="color-label">{{ session['color_4'] }}</div>
-                                </div>
+
+                        </div>
+
+                        <div id="loading-section" style="display: none;">
+                            <p class="text-center">Generating colors...</p>
+                            <div class="spinner-border text-primary d-block mx-auto" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -64,14 +60,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
     <script>
-        // Initialize Dropzone after the page has loaded
         Dropzone.autoDiscover = false;
 
         var myDropzone = new Dropzone("#my-dropzone", {
-            paramName: "file", // The name of the file field
-            maxFilesize: 5,    // Maximum file size in megabytes
-            acceptedFiles: ".jpg,.jpeg,.png", // Allowed file types
-            addRemoveLinks: true, // Show remove links on uploaded files
+            paramName: "file",
+            maxFilesize: 5,
+            acceptedFiles: ".jpg,.jpeg,.png",
+            addRemoveLinks: true,
             uploadMultiple: false,
             autoProcessQueue: false
         });
@@ -79,8 +74,101 @@
         document.getElementById("upload-btn").addEventListener("click", function () {
             myDropzone.processQueue();
             document.getElementById("dropzone-section").style.display = "none";
-            document.getElementById("color-palette-section").style.display = "block";
+            document.getElementById("loading-section").style.display = "block";
+
+
+
+            setTimeout(function () {
+                updateColorPalette()
+                document.getElementById("loading-section").style.display = "none";
+                document.getElementById("color-palette-section").style.display = "block";
+            }, 4000);
         });
+
+        document.getElementById("try-another").addEventListener("click", function () {
+        window.location.href = "{{ url_for('generate_colors') }}";
+        });
+
+
+        function updateColorPalette() {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/get_updated_colors", true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+
+                    var response = JSON.parse(xhr.responseText);
+
+                    displayColorPalette(response);
+
+                }
+            };
+
+            xhr.send();
+        }
+
+        function displayColorPalette(data) {
+
+            document.getElementById("color-palette-section").innerHTML = `
+                <style>
+                .color-palette {
+                    display: flex;
+                    flex-direction: column;
+                    width: 400px;
+                    height: 400px;
+                }
+
+                .color-box {
+                    flex: 1;
+                    width: 300px;
+                    margin-bottom: 10px;
+                    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+                    transition: background-color 0.3s;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    flex-direction: column;
+                }
+
+                .color-label {
+                    font-size: 24px;
+                    color: #000;
+                    transition: color 0.3s;
+                    margin-top: 5px;
+                }
+
+                .color-box:hover {
+                    background-color: transparent;
+                    cursor: pointer;
+                    color: #fff;
+                }
+
+                .color-box:hover .color-label {
+                    color: #fff;
+                }
+                </style>
+
+                <div class="color-palette">
+                                <div class="color-box" style="background-color: ${data.color_1};">
+                                    <div class="color-label">${data.color_1}</div>
+                                </div>
+                                <div class="color-box" style="background-color: ${data.color_2};">
+                                    <div class="color-label">${data.color_2}</div>
+                                </div>
+                                <div class="color-box" style="background-color: ${data.color_3};">
+                                    <div class="color-label">${data.color_3}</div>
+                                </div>
+                                <div class="color-box" style="background-color: ${data.color_4};">
+                                    <div class="color-label">${data.color_4}</div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button class="btn btn-primary btn-lg mt-3" id="try-another">Try another</button>
+                            </div>
+            `;
+        };
     </script>
 </body>
 </html>
