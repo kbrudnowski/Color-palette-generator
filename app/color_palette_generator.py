@@ -34,10 +34,10 @@ def get_colors(image_file):
     for color in top_colors:
         colors.append(rgb2hex(color))
 
-    colors_dict = {"colors": colors}
-    json_object = json.dumps(colors_dict)
+    # colors_dict = {"colors": colors}
+    # json_object = json.dumps(colors_dict)
 
-    return json_object
+    return colors
 
 
 

@@ -1,7 +1,6 @@
 from app import app
 from flask import render_template, request, session
 from .color_palette_generator import get_colors
-import json
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -9,20 +8,9 @@ def generate_colors():
     if request.method == 'POST':
         f = request.files.get('file')
         if f:
-            session['colors'] = get_colors(f)
+            colors_list = get_colors(f)
+            session['color_1'] = colors_list[0]
+            session['color_2'] = colors_list[1]
+            session['color_3'] = colors_list[2]
+            session['color_4'] = colors_list[3]
     return render_template('index.html')
-
-
-@app.route('/effect/')
-def effect():
-    if session['colors'] is not None:
-        colors_json_str = session.get(
-            'colors', '{}'
-        )
-        colors_dict = json.loads(colors_json_str)
-    else:
-        colors_dict = {"colors": ['#000000', '#ff0000', '#ffffff', '#ff0000']}
-
-    colors_list = colors_dict['colors']
-
-    return render_template('effect.html', colors=colors_list)
