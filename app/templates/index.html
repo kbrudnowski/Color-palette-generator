@@ -6,6 +6,7 @@
     {% endblock %}
 
 {% block content %}
+<div id="dropzone-section">
 <form action="{{ url_for('generate_colors') }}" method="POST" class="dropzone text-center" id="my-dropzone">
         <div class="dz-message">
                                 <i class="fas fa-cloud-upload-alt mb-3"></i>
@@ -13,7 +14,14 @@
                             </div>
     </form>
 <div class="text-center"><button class="btn btn-primary mt-3" id="upload-btn">Generate</button></div>
-
+</div>
+<div id="color-palette-section" style="display: none;">
+        <div class="color-palette">
+            {% for color in colors %}
+                <div class="color-box" style="background-color: {{ color }};"></div>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}
 
@@ -37,6 +45,9 @@
 
         document.getElementById("upload-btn").addEventListener("click", function () {
             myDropzone.processQueue();
+<!--            document.getElementById("dropzone-section").style.display = "none";-->
+<!--            document.getElementById("color-palette-section").style.display = "block";-->
         });
+
     </script>
     {% endblock %}
