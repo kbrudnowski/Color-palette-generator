@@ -13,7 +13,6 @@ def generate_colors():
             session['color_2'] = colors_list[1]
             session['color_3'] = colors_list[2]
             session['color_4'] = colors_list[3]
-            print('colors changed')
     return render_template('index.html')
 
 
