@@ -1,8 +1,8 @@
 import cv2
 from sklearn.cluster import KMeans
 from collections import Counter
-from PIL import Image
 import numpy as np
+import json
 
 
 
@@ -34,9 +34,10 @@ def get_colors(image_file):
     for color in top_colors:
         colors.append(rgb2hex(color))
 
-    colors_dict = {'colors': colors}
+    colors_dict = {"colors": colors}
+    json_object = json.dumps(colors_dict)
 
-    return colors_dict
+    return json_object
 
 
 

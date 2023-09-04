@@ -20,7 +20,6 @@
 {% block footer %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
 <script>
-
         Dropzone.options.myDropzone = {
             paramName: "file", // The name of the file field
             maxFilesize: 5,    // Maximum file size in megabytes
@@ -30,14 +29,12 @@
             autoProcessQueue: false,
 
             success: function (file, response) {
-                window.location.href = "{{ url_for('generate_colors') }}";
+                window.location.href = {{ url_for('effect') }};
             }
         };
 
-
         var myDropzone = new Dropzone("#my-dropzone", Dropzone.options.myDropzone);
 
-        // Add an event listener to the "Generate" button
         document.getElementById("upload-btn").addEventListener("click", function () {
             myDropzone.processQueue();
         });
