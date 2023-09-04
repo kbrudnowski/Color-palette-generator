@@ -17,10 +17,24 @@
 </div>
 <div id="color-palette-section" style="display: none;">
         <div class="color-palette">
-            {% for color in colors %}
-                <div class="color-box" style="background-color: {{ color }};"></div>
-            {% endfor %}
+            <div class="color-box" style="background-color: {{ session['color_1'] }};">
+                <div class="color-label">{{ session['color_1'] }}</div>
+            </div>
+
+            <div class="color-box" style="background-color: {{ session['color_2'] }};">
+                <div class="color-label">{{ session['color_2'] }}</div>
+            </div>
+
+            <div class="color-box" style="background-color: {{ session['color_3'] }};">
+                <div class="color-label">{{ session['color_3'] }}</div>
+            </div>
+
+            <div class="color-box" style="background-color: {{ session['color_4'] }};">
+                <div class="color-label">{{ session['color_4'] }}</div>
+            </div>
         </div>
+
+
     </div>
 
 {% endblock %}
@@ -36,17 +50,17 @@
             uploadMultiple: false,
             autoProcessQueue: false,
 
-            success: function (file, response) {
-                window.location.href = {{ url_for('effect') }};
-            }
+<!--            success: function (file, response) {-->
+<!--                window.location.href = {{ url_for('effect') }};-->
+<!--            }-->
         };
 
         var myDropzone = new Dropzone("#my-dropzone", Dropzone.options.myDropzone);
 
         document.getElementById("upload-btn").addEventListener("click", function () {
             myDropzone.processQueue();
-<!--            document.getElementById("dropzone-section").style.display = "none";-->
-<!--            document.getElementById("color-palette-section").style.display = "block";-->
+            document.getElementById("dropzone-section").style.display = "none";
+            document.getElementById("color-palette-section").style.display = "block";
         });
 
     </script>
